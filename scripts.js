@@ -9,6 +9,7 @@ const SPEED_SCALE_INCREASE = 0.00001;
 const worldEl = document.querySelector("[data-world]");
 const startScreen = document.querySelector(".startScreen");
 const scoreEl = document.querySelector(".score");
+const highscoreEl = document.querySelector(".highscore");
 // setupGround();
 
 const setPixelToWorldScale = () => {
@@ -26,6 +27,9 @@ const setPixelToWorldScale = () => {
 let lastTime;
 let speedScale;
 let score;
+let highscore;
+localStorage.setItem("highscore", 0);
+
 const update = (time) => {
 	if (lastTime == null) {
 		lastTime = time;
@@ -67,7 +71,15 @@ const updateSpeedScale = (delta) => {
 
 const updateScore = (delta) => {
 	score += delta * 0.01;
-	scoreEl.innerText = `${Math.floor(score)}`;
+	scoreEl.innerText = `Score: ${Math.floor(score)}`;
+	highscoreEl.innerHTML = `Highscore: ${localStorage.getItem("highscore")}`;
+	if (score > parseInt(localStorage.getItem("highscore"))) {
+		score += delta * 0.01;
+		highscore += Math.floor(score);
+		scoreEl.innerText = `${Math.floor(score)}`;
+		highscoreEl.innerText = `Highscore: ${Math.floor(highscore)}`;
+		localStorage.setItem("highscore", score);
+	}
 };
 
 const handleStart = () => {
